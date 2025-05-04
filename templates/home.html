@@ -361,12 +361,20 @@
                     updateLiveModeButton();
                     // logDisplay.className = 'connected';
                     // logDisplay.textContent = '✅ Connected to Django WebSocket';
-                    addLogEntry({method: 'CONNECT', timestamp: new Date().toISOString(), body: 'Connection established' }, 'status');
+                    addLogEntry(
+                        {
+                            method: 'CONNECT',
+                            timestamp: new Date().toISOString(),
+                            body: 'Connection established'
+                        },
+                            'status'
+                    );
                 };
 
                 socket.onmessage = (event) => {
                     try {
                         const parsedData = JSON.parse(event.data);
+                        console.log(parsedData);
                         addLogEntry(parsedData, 'message');
                     } catch (error) {
                         addLogEntry(`❌ Error parsing message: ${error.message}`, 'error');
@@ -411,6 +419,7 @@
         });
 
         function addLogEntry(message, type = 'message') {
+            console.log("message", message);
             let logEntryContent = '';
             if (type === 'message') {
                 let methodColor = '';
@@ -446,7 +455,7 @@
                         </div>
                         <div class="flex items-center justify-between mt-2">
                             <div class="text-xs text-webhook-text-gray">${message.content_type}</div>
-                            <div class="text-xs text-webhook-text-gray">${message.content_length}</div>
+                            <div class="text-xs text-webhook-text-gray">${message.response_size}</div>
                         </div>
                     `;
             } else if (type === 'status') {

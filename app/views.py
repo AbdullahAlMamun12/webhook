@@ -5,7 +5,21 @@ from channels.layers import get_channel_layer
 from asgiref.sync import async_to_sync
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse  # Import the reverse function
+from django.utils import timezone
 import json
+
+
+
+def humanize_bytes(bytes):
+    """Converts bytes to a human-readable format."""
+    if bytes is None:
+        return "N/A"
+    units = ['B', 'KB', 'MB', 'GB', 'TB', 'PB']
+    i = 0
+    while bytes >= 1024 and i < len(units) - 1:
+        bytes /= 1024
+        i += 1
+    return f"{bytes:.1f} {units[i]}"
 
 def new_session(request):
     """
@@ -29,7 +43,6 @@ def view_session(request, session_id):
     """
     View that retrieves and displays the session ID.
     """
-    print(session_id)
     #  get the session_id from the session, or the url
     retrieved_session_id = request.session.get('session_id', session_id)
     return render(request, "home.html", {"session_id": retrieved_session_id})
@@ -50,24 +63,31 @@ def edit_response(request, session_id):
 
     return render(request, "edit_response.html", {"session": session})
 
-@csrf_exempt
-def receive_hook(request, session_id):
-    try:
-        session = Session.objects.get(id=session_id)
-    except Session.DoesNotExist:
-        return JsonResponse({"error": "Session not found"}, status=404)
 
+@csrf_exempt
+
+def receive_hook(request, session_id):
+
+    session = get_object_or_404(Session, id=session_id)
     headers = {k: v for k, v in request.headers.items()}
     body = request.body.decode('utf-8', errors='replace')
     query_params = request.GET.dict()
+    request_size = len(request.body) if hasattr(request, 'body') else 0
 
-    wr =  WebhookRequest.objects.create(
+    wr = WebhookRequest.objects.create(
         session=session,
         method=request.method,
         headers=headers,
         body=body,
-        query_params=query_params
+        query_params=query_params,
+        request_size=request_size  # Store the request size here
     )
+    response_body = session.response_body
+    response_headers = session.response_headers
+    response_status = session.response_status
+    content_type = response_headers.get('Content-Type', 'application/json')
+    response_size_bytes = len(response_body.encode('utf-8')) if response_body else 0
+
 
     # ✅ This is the PRODUCER step!
     channel_layer = get_channel_layer()
@@ -77,19 +97,23 @@ def receive_hook(request, session_id):
             "type": "new_webhook",
             "data": {
                 "method": wr.method,
+                "content_type": wr.headers.get('Content-Type', 'application/json'),
                 "body": wr.body[:300],
-                "timestamp": wr.timestamp.isoformat()
+                "request_size": humanize_bytes(wr.request_size),  # Use the stored request size
+                "response_size": humanize_bytes(response_size_bytes),  # Approximate response size
+                "timestamp": timezone.now().isoformat(), # Use timezone.now() for consistency
             }
         }
     )
 
     # Return the user's custom response
     return HttpResponse(
-        content=session.response_body,
-        status=session.response_status,
-        content_type=session.response_headers.get('Content-Type', 'application/json'),
-        headers=session.response_headers  # Django 3.2+ supports this directly
+        content=response_body,
+        status=response_status,
+        content_type=content_type,
+        headers=response_headers
     )
+
 
 @csrf_exempt
 def view_logs(request, session_id):

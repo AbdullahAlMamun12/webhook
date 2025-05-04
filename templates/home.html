@@ -4,8 +4,25 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     {% load static %}
     <link rel="stylesheet" href="{% static 'style.css' %}">
+
+    <style>
+        #log-display {
+            overflow-y: auto;
+            max-height: 500px; /* Limit the height and add scrollbar */
+            background-color: #23272a;  /* Darker background for the log area */
+            padding: 10px;
+            border-radius: 4px;
+            border: 1px solid #4a5568;
+            margin-bottom: 20px;
+            font-size: 0.9rem;
+            line-height: 1.4;
+        }
+    </style>
+    <title>Webhook</title>
 </head>
 <body>
+
+
 <div id="root">
     <div role="region" aria-label="Notifications (F8)" tabindex="-1" style="pointer-events: none;">
         <ol tabindex="-1" class="fixed top-0 z-[100] flex max-h-screen w-full flex-col-reverse p-4 sm:bottom-0 sm:right-0 sm:top-auto sm:flex-col md:max-w-[420px]"></ol>
@@ -38,7 +55,7 @@
                                 </div>
                                 <div class="w-full text-sm" data-sidebar="group-content">
                                     <ul class="flex w-full min-w-0 flex-col gap-1" data-sidebar="menu">
-                                        <li class="group/menu-item relative" data-sidebar="menu-item"><a class="peer/menu-button flex w-full items-center gap-2 overflow-hidden rounded-md p-2 text-left outline-none ring-sidebar-ring transition-[width,height,padding] focus-visible:ring-2 active:bg-sidebar-accent active:text-sidebar-accent-foreground disabled:pointer-events-none disabled:opacity-50 group-has-[[data-sidebar=menu-action]]/menu-item:pr-8 aria-disabled:pointer-events-none aria-disabled:opacity-50 data-[active=true]:bg-sidebar-accent data-[active=true]:font-medium data-[active=true]:text-sidebar-accent-foreground data-[state=open]:hover:bg-sidebar-accent data-[state=open]:hover:text-sidebar-accent-foreground group-data-[collapsible=icon]:!size-8 group-data-[collapsible=icon]:!p-2 [&amp;&gt;span:last-child]:truncate [&amp;&gt;svg]:size-4 [&amp;&gt;svg]:shrink-0 hover:bg-sidebar-accent hover:text-sidebar-accent-foreground h-8 text-sm flex gap-2 items-center" data-sidebar="menu-button" data-size="default" data-active="false" href="http://localhost:8080/">
+                                        <li class="group/menu-item relative" data-sidebar="menu-item"><a class="peer/menu-button flex w-full items-center gap-2 overflow-hidden rounded-md p-2 text-left outline-none ring-sidebar-ring transition-[width,height,padding] focus-visible:ring-2 active:bg-sidebar-accent active:text-sidebar-accent-foreground disabled:pointer-events-none disabled:opacity-50 group-has-[[data-sidebar=menu-action]]/menu-item:pr-8 aria-disabled:pointer-events-none aria-disabled:opacity-50 data-[active=true]:bg-sidebar-accent data-[active=true]:font-medium data-[active=true]:text-sidebar-accent-foreground data-[state=open]:hover:bg-sidebar-accent hover:text-sidebar-accent-foreground h-8 text-sm flex gap-2 items-center" data-sidebar="menu-button" data-size="default" data-active="false" href="http://localhost:8080/">
                                             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" width="24"
                                                  height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                                                  stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -48,7 +65,7 @@
                                             </svg>
                                             <span>Inspector</span></a>
                                         </li>
-                                        <li class="group/menu-item relative" data-sidebar="menu-item"><a class="peer/menu-button flex w-full items-center gap-2 overflow-hidden rounded-md p-2 text-left outline-none ring-sidebar-ring transition-[width,height,padding] focus-visible:ring-2 active:bg-sidebar-accent active:text-sidebar-accent-foreground disabled:pointer-events-none disabled:opacity-50 group-has-[[data-sidebar=menu-action]]/menu-item:pr-8 aria-disabled:pointer-events-none aria-disabled:opacity-50 data-[active=true]:bg-sidebar-accent data-[active=true]:font-medium data-[active=true]:text-sidebar-accent-foreground data-[state=open]:hover:bg-sidebar-accent data-[state=open]:hover:text-sidebar-accent-foreground group-data-[collapsible=icon]:!size-8 group-data-[collapsible=icon]:!p-2 [&amp;&gt;span:last-child]:truncate [&amp;&gt;svg]:size-4 [&amp;&gt;svg]:shrink-0 hover:bg-sidebar-accent hover:text-sidebar-accent-foreground h-8 text-sm flex gap-2 items-center" data-sidebar="menu-button" data-size="default" data-active="false" href="http://localhost:8080/history">
+                                        <li class="group/menu-item relative" data-sidebar="menu-item"><a class="peer/menu-button flex w-full items-center gap-2 overflow-hidden rounded-md p-2 text-left outline-none ring-sidebar-ring transition-[width,height,padding] focus-visible:outline-none focus-visible:ring-2 active:bg-sidebar-accent active:text-sidebar-accent-foreground disabled:pointer-events-none disabled:opacity-50 group-has-[[data-sidebar=menu-action]]/menu-item:pr-8 aria-disabled:pointer-events-none aria-disabled:opacity-50 data-[active=true]:bg-sidebar-accent data-[active=true]:font-medium data-[active=true]:text-sidebar-accent-foreground data-[state=open]:hover:bg-sidebar-accent hover:text-sidebar-accent-foreground h-8 text-sm flex gap-2 items-center" data-sidebar="menu-button" data-size="default" data-active="false" href="http://localhost:8080/history">
                                             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" width="24"
                                                  height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                                                  stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -63,7 +80,7 @@
                                             </svg>
                                             <span>History</span></a>
                                         </li>
-                                        <li class="group/menu-item relative" data-sidebar="menu-item"><a class="peer/menu-button flex w-full items-center gap-2 overflow-hidden rounded-md p-2 text-left outline-none ring-sidebar-ring transition-[width,height,padding] focus-visible:ring-2 active:bg-sidebar-accent active:text-sidebar-accent-foreground disabled:pointer-events-none disabled:opacity-50 group-has-[[data-sidebar=menu-action]]/menu-item:pr-8 aria-disabled:pointer-events-none aria-disabled:opacity-50 data-[active=true]:bg-sidebar-accent data-[active=true]:font-medium data-[active=true]:text-sidebar-accent-foreground data-[state=open]:hover:bg-sidebar-accent data-[state=open]:hover:text-sidebar-accent-foreground group-data-[collapsible=icon]:!size-8 group-data-[collapsible=icon]:!p-2 [&amp;&gt;span:last-child]:truncate [&amp;&gt;svg]:size-4 [&amp;&gt;svg]:shrink-0 hover:bg-sidebar-accent hover:text-sidebar-accent-foreground h-8 text-sm flex gap-2 items-center" data-sidebar="menu-button" data-size="default" data-active="false" href="http://localhost:8080/settings">
+                                        <li class="group/menu-item relative" data-sidebar="menu-item"><a class="peer/menu-button flex w-full items-center gap-2 overflow-hidden rounded-md p-2 text-left outline-none ring-sidebar-ring transition-[width,height,padding] focus-visible:ring-2 active:bg-sidebar-accent active:text-sidebar-accent-foreground disabled:pointer-events-none disabled:opacity-50 group-has-[[data-sidebar=menu-action]]/menu-item:pr-8 aria-disabled:pointer-events-none aria-disabled:opacity-50 data-[active=true]:bg-sidebar-accent data-[active=true]:font-medium data-[active=true]:text-sidebar-accent-foreground data-[state=open]:hover:bg-sidebar-accent hover:text-sidebar-accent-foreground h-8 text-sm flex gap-2 items-center" data-sidebar="menu-button" data-size="default" data-active="false" href="http://localhost:8080/settings">
                                             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" width="24"
                                                  height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                                                  stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -91,8 +108,9 @@
                     <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6">
                         <h1 class="text-2xl font-bold">Webhook Inspector</h1>
                         <div class="flex gap-2">
-                            <button class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg]:size-4 [&amp;_svg]:shrink-0 border border-input hover:text-accent-foreground h-10 px-4 py-2 bg-green-500/20 hover:bg-green-500/30">
-                                <span class="mr-2 badge-ping false"></span>Live Mode ON
+                            <button id="live-mode-button"
+                                    class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg]:size-4 [&amp;_svg]:shrink-0 border border-input hover:text-accent-foreground h-10 px-4 py-2 bg-background hover:bg-accent text-muted-foreground">
+                                <span class="mr-2 badge-ping false"></span>Live Mode OFF
                             </button>
                             <button class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg]:size-4 [&amp;_svg]:shrink-0 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2 text-muted-foreground">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" width="24" height="24"
@@ -111,11 +129,11 @@
                             <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 sm:gap-4">
                                 <div class="flex-grow">
                                     <div class="text-xs uppercase text-webhook-text-gray mb-1">Your Webhook URL</div>
-                                    <div class="font-mono text-sm sm:text-base overflow-auto truncate max-w-full px-2 py-1 bg-muted rounded">
-                                        <div id="current-origin"></div>
+                                    <div id="current-origin"  class="font-mono text-sm sm:text-base overflow-auto truncate max-w-full px-2 py-1 bg-muted rounded">
+                                        https://echoverseapp.io/tf8a5dga
                                     </div>
                                 </div>
-                                <button id="copy-url-button" class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg]:size-4 [&amp;_svg]:shrink-0 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2 gap-2 min-w-[100px]">
+                                <button id = "copy-url-button" class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg]:size-4 [&amp;_svg]:shrink-0 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2 gap-2 min-w-[100px]">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" width="24" height="24"
                                          viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                                          stroke-linecap="round" stroke-linejoin="round">
@@ -127,6 +145,7 @@
                             </div>
                         </div>
                     </div>
+
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6 flex-grow overflow-hidden">
                         <div class="h-[calc(100vh-280px)] md:h-auto">
                             <div class="rounded-lg border text-card-foreground shadow-sm border-webhook-border-gray bg-card h-full flex flex-col">
@@ -135,6 +154,7 @@
                                             class="tracking-tight text-base font-medium">Requests</h3><span
                                             class="text-xs text-muted-foreground font-mono">8 Requests</span></div>
                                 </div>
+
                                 <div class="p-0 flex-grow overflow-hidden">
                                     <div  dir="ltr"  id="log-display" class="relative overflow-hidden h-full"
                                           style="position: relative; --radix-scroll-area-corner-width: 0px; --radix-scroll-area-corner-height: 0px;">
@@ -155,10 +175,105 @@
                                                 flex-grow: 1;
                                             }
                                         </style>
-                                        <div data-radix-scroll-area-viewport=""
-                                             class="h-full w-full rounded-[inherit]" style="overflow: hidden scroll;">
-                                            <div class="divide-y divide-border">
-
+                                        <div data-radix-scroll-area-viewport="" class="h-full w-full rounded-[inherit]" style="overflow: hidden scroll;">
+                                            <div data-radix-scroll-area-content="">
+                                                <div class="divide-y divide-border" id="log-list">
+                                                    <div class="p-3 border-b border-border cursor-pointer hover:bg-muted/30 transition-colors">
+                                                        <div class="flex items-center justify-between">
+                                                            <div class="flex items-center gap-2">
+                                                                <div class="inline-flex items-center border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent text-primary-foreground hover:bg-primary/80 bg-blue-600 rounded font-mono">
+                                                                    GET
+                                                                </div>
+                                                                <span class="font-mono text-sm truncate max-w-[200px]">/api/notification</span>
+                                                            </div>
+                                                            <div class="text-xs text-webhook-text-gray">about 1 hour ago
+                                                            </div>
+                                                        </div>
+                                                        <div class="flex items-center justify-between mt-2">
+                                                            <div class="text-xs text-webhook-text-gray">text/plain
+                                                            </div>
+                                                            <div class="text-xs text-webhook-text-gray">1.5 KB
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="p-3 border-b border-border cursor-pointer hover:bg-muted/30 transition-colors">
+                                                        <div class="flex items-center justify-between">
+                                                            <div class="flex items-center gap-2">
+                                                                <div class="inline-flex items-center border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent text-primary-foreground hover:bg-primary/80 bg-green-600 rounded font-mono">
+                                                                    POST
+                                                                </div>
+                                                                <span class="font-mono text-sm truncate max-w-[200px]">/api/webhook</span>
+                                                            </div>
+                                                            <div class="text-xs text-webhook-text-gray">about 2 hours
+                                                                ago
+                                                            </div>
+                                                        </div>
+                                                        <div class="flex items-center justify-between mt-2">
+                                                            <div class="text-xs text-webhook-text-gray">text/plain
+                                                            </div>
+                                                            <div class="text-xs text-webhook-text-gray">7.5 KB
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="p-3 border-b border-border cursor-pointer hover:bg-muted/30 transition-colors">
+                                                        <div class="flex items-center justify-between">
+                                                            <div class="flex items-center gap-2">
+                                                                <div class="inline-flex items-center border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent text-primary-foreground hover:bg-primary/80 bg-yellow-600 rounded font-mono">
+                                                                    PUT
+                                                                </div>
+                                                                <span class="font-mono text-sm truncate max-w-[200px]">/api/webhook</span>
+                                                            </div>
+                                                            <div class="text-xs text-webhook-text-gray">about 3 hours
+                                                                ago
+                                                            </div>
+                                                        </div>
+                                                        <div class="flex items-center justify-between mt-2">
+                                                            <div class="text-xs text-webhook-text-gray">
+                                                                application/x-www-form-urlencoded
+                                                            </div>
+                                                            <div class="text-xs text-webhook-text-gray">6.4 KB
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="p-3 border-b border-border cursor-pointer hover:bg-muted/30 transition-colors">
+                                                        <div class="flex items-center justify-between">
+                                                            <div class="flex items-center gap-2">
+                                                                <div class="inline-flex items-center border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent text-primary-foreground hover:bg-primary/80 bg-red-600 rounded font-mono">
+                                                                    DELETE
+                                                                </div>
+                                                                <span class="font-mono text-sm truncate max-w-[200px]">/api/event</span>
+                                                            </div>
+                                                            <div class="text-xs text-webhook-text-gray">about 9 hours
+                                                                ago
+                                                            </div>
+                                                        </div>
+                                                        <div class="flex items-center justify-between mt-2">
+                                                            <div class="text-xs text-webhook-text-gray">application/xml
+                                                            </div>
+                                                            <div class="text-xs text-webhook-text-gray">3.3 KB
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="p-3 border-b border-border cursor-pointer hover:bg-muted/30 transition-colors">
+                                                        <div class="flex items-center justify-between">
+                                                            <div class="flex items-center gap-2">
+                                                                <div class="inline-flex items-center border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent text-primary-foreground hover:bg-primary/80 bg-purple-600 rounded font-mono">
+                                                                    PATCH
+                                                                </div>
+                                                                <span class="font-mono text-sm truncate max-w-[200px]">/api/user</span>
+                                                            </div>
+                                                            <div class="text-xs text-webhook-text-gray">about 10 hours
+                                                                ago
+                                                            </div>
+                                                        </div>
+                                                        <div class="flex items-center justify-between mt-2">
+                                                            <div class="text-xs text-webhook-text-gray">text/plain
+                                                            </div>
+                                                            <div class="text-xs text-webhook-text-gray">9.3 KB
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -191,64 +306,135 @@
 </div>
 
 <script>
-    const originElement = document.getElementById('current-origin');
-    if (originElement) {
-        originElement.textContent = window.location.origin + "/" +"{{ session_id }}";
-    }
+        const originElement = document.getElementById('current-origin');
+        if (originElement) {
+            originElement.textContent = window.location.origin + "/" + "{{ session_id }}";
+        }
 
-    function showToast(message) {
-        const toast = document.createElement('div');
-        toast.classList.add('toast');
-        toast.textContent = message;
-        document.body.appendChild(toast);
-        setTimeout(() => toast.remove(), 3000);
-    }
+        function showToast(message) {
+            const toast = document.createElement('div');
+            toast.classList.add('toast');
+            toast.textContent = message;
+            document.body.appendChild(toast);
+            setTimeout(() => toast.remove(), 3000);
+        }
 
-    const copyUrlButton = document.getElementById('copy-url-button');
-    if (copyUrlButton) {
-        copyUrlButton.addEventListener('click', function() {
-            const urlToCopy = originElement.textContent;
-            navigator.clipboard.writeText(urlToCopy).then(function() {
-                alert('URL copied to clipboard!');
-            }).catch(function(err) {
-                alert('Failed to copy URL: ' + err);
+        const copyUrlButton = document.getElementById('copy-url-button');
+        if (copyUrlButton) {
+            copyUrlButton.addEventListener('click', function() {
+                const urlToCopy = originElement.textContent;
+                navigator.clipboard.writeText(urlToCopy).then(function() {
+                    alert('URL copied to clipboard!');
+                }).catch(function(err) {
+                    alert('Failed to copy URL: ' + err);
+                });
             });
-        });
-    }
+        }
 
+        // WebSocket implementation
+        const requestList = document.getElementById('log-list');
+        const sessionId = '279d4c37-d8e6-47d6-b83a-d72d00f65894'; // Replace with your actual session ID
+        const wsUrl = `ws://localhost:8000/ws/logs/${sessionId}/`;
+        let socket = null;
 
+        const liveModeButton = document.getElementById('live-mode-button');
+        let isConnected = false;
 
-    // WebSocket implementation
-    const logDisplay = document.getElementById('log-display');
-    const sessionId = '279d4c37-d8e6-47d6-b83a-d72d00f65894'; // Replace with your actual session ID
-    const wsUrl = `ws://localhost:8000/ws/logs/${sessionId}/`;
-    const socket = new WebSocket(wsUrl);
-
-    function addLogEntry(message, type = 'message') {
-        let logEntryContent = '';
-        if (type === 'message') {
-            let methodColor = '';
-            switch (message.method) {
-                case 'GET':
-                    methodColor = 'bg-blue-600';
-                    break;
-                case 'POST':
-                    methodColor = 'bg-green-600';
-                    break;
-                case 'PUT':
-                    methodColor = 'bg-yellow-600';
-                    break;
-                case 'DELETE':
-                    methodColor = 'bg-red-600';
-                    break;
-                case 'PATCH':
-                    methodColor = 'bg-purple-600';
-                    break;
-                default:
-                    methodColor = 'bg-gray-600';
+        function updateLiveModeButton() {
+            if (isConnected) {
+                liveModeButton.innerHTML = '<span class="mr-2 badge-ping false"></span>Live Mode ON'
+                liveModeButton.classList.remove('bg-background', 'hover:bg-accent', 'text-muted-foreground');
+                liveModeButton.classList.add('bg-green-500/20', 'hover:bg-green-500/30');
             }
+            else {
+                liveModeButton.innerHTML = '<span class="mr-2 badge-ping false"></span>Live Mode OFF'
+                liveModeButton.classList.remove('bg-green-500/20', 'hover:bg-green-500/30');
+                liveModeButton.classList.add('bg-background', 'hover:bg-accent', 'text-muted-foreground');
+            }
+        }
+        function connectWebSocket() {
+            if (!socket || socket.readyState === WebSocket.CLOSED) {
+                socket = new WebSocket(wsUrl);
 
-            logEntryContent = `
+                socket.onopen = () => {
+                    isConnected = true;
+                    updateLiveModeButton();
+                    // logDisplay.className = 'connected';
+                    // logDisplay.textContent = '✅ Connected to Django WebSocket';
+                    addLogEntry({method: 'CONNECT', timestamp: new Date().toISOString(), body: 'Connection established' }, 'status');
+                };
+
+                socket.onmessage = (event) => {
+                    try {
+                        const parsedData = JSON.parse(event.data);
+                        addLogEntry(parsedData, 'message');
+                    } catch (error) {
+                        addLogEntry(`❌ Error parsing message: ${error.message}`, 'error');
+                        addLogEntry(event.data, 'error');
+                        console.error('Error parsing WebSocket message', error);
+                    }
+                };
+
+                socket.onclose = () => {
+                    isConnected = false;
+                    updateLiveModeButton();
+                    // logDisplay.className = 'disconnected';
+                    // logDisplay.textContent = '🔌 WebSocket disconnected';
+                    addLogEntry('🔌 Disconnected from Django WebSocket', 'status');
+                };
+
+                socket.onerror = (error) => {
+                    isConnected = false;
+                    updateLiveModeButton();
+                    // logDisplay.className = 'error';
+                    // logDisplay.textContent = `❌ WebSocket error: ${error.message}`;
+                    // addLogEntry(`❌ WebSocket error: ${error.message}`, 'error');
+                    console.error('WebSocket error:', error);
+                };
+            }
+        }
+
+        function disconnectWebSocket() {
+            if (socket && socket.readyState === WebSocket.OPEN) {
+                socket.close();
+            }
+            isConnected = false;
+            updateLiveModeButton();
+        }
+
+        liveModeButton.addEventListener('click', () => {
+            if (isConnected) {
+                disconnectWebSocket();
+            } else {
+                connectWebSocket();
+            }
+        });
+
+        function addLogEntry(message, type = 'message') {
+            let logEntryContent = '';
+            if (type === 'message') {
+                let methodColor = '';
+                switch (message.method) {
+                    case 'GET':
+                        methodColor = 'bg-blue-600';
+                        break;
+                    case 'POST':
+                        methodColor = 'bg-green-600';
+                        break;
+                    case 'PUT':
+                        methodColor = 'bg-yellow-600';
+                        break;
+                    case 'DELETE':
+                        methodColor = 'bg-red-600';
+                        break;
+                    case 'PATCH':
+                        methodColor = 'bg-purple-600';
+                        break;
+                    default:
+                        methodColor = 'bg-gray-600';
+                }
+
+                logEntryContent = `
                         <div class="flex items-center justify-between">
                             <div class="flex items-center gap-2">
                                 <div class="inline-flex items-center border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent text-primary-foreground hover:bg-primary/80 ${methodColor} rounded font-mono">
@@ -263,48 +449,19 @@
                             <div class="text-xs text-webhook-text-gray">${message.content_length}</div>
                         </div>
                     `;
-        } else if (type === 'status') {
-            logEntryContent = message;
-        } else if (type === 'error') {
-            logEntryContent = message;
+            } else if (type === 'status') {
+                logEntryContent = message;
+            } else if (type === 'error') {
+                logEntryContent = message;
+            }
+
+            const logEntry = document.createElement('div');
+            logEntry.classList.add('log-entry');
+            logEntry.innerHTML = logEntryContent;
+            requestList.appendChild(logEntry);
+            requestList.scrollTop = requestList.scrollHeight;
         }
 
-        const logEntry = document.createElement('div');
-        logEntry.classList.add('log-entry');
-        logEntry.innerHTML = logEntryContent;
-        logDisplay.appendChild(logEntry);
-        logDisplay.scrollTop = logDisplay.scrollHeight;
-    }
-
-    socket.onopen = () => {
-        logDisplay.className = 'connected';
-        logDisplay.textContent = '✅ Connected to Django WebSocket';
-        addLogEntry({method: 'CONNECT', timestamp: new Date().toISOString(), body: 'Connection established' }, 'status');
-    };
-
-    socket.onmessage = (event) => {
-        try {
-            const parsedData = JSON.parse(event.data);
-            addLogEntry(parsedData, 'message');
-        } catch (error) {
-            addLogEntry(`❌ Error parsing message: ${error.message}`, 'error');
-            addLogEntry(event.data, 'error');
-            console.error('Error parsing WebSocket message', error);
-        }
-    };
-
-    socket.onclose = () => {
-        logDisplay.className = 'disconnected';
-        logDisplay.textContent = '🔌 WebSocket disconnected';
-        addLogEntry('🔌 Disconnected from Django WebSocket', 'status');
-    };
-
-    socket.onerror = (error) => {
-        logDisplay.className = 'error';
-        logDisplay.textContent = `❌ WebSocket error: ${error.message}`;
-        addLogEntry(`❌ WebSocket error: ${error.message}`, 'error');
-        console.error('WebSocket error:', error);
-    };
 </script>
 
 

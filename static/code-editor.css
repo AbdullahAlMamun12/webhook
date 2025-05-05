@@ -1,0 +1,196 @@
+
+:root {
+    --background: #1E293B;
+    --foreground: #F8FAFC;
+    --card: #0F172A;
+    --card-foreground: #F8FAFC;
+    --primary: #9B87F5;
+    --primary-foreground: #0F172A;
+    --muted: #334155;
+    --muted-foreground: #94A3B8;
+    --border: #334155;
+    --input: #334155;
+    --radius: 0.5rem;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background-color: var(--background);
+    color: var(--foreground);
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    line-height: 1.5;
+    padding: 1.5rem;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+h1 {
+    font-size: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+@media (min-width: 768px) {
+    .grid {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+.card {
+    background-color: var(--card);
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+    overflow: hidden;
+}
+
+.card-header {
+    padding: 1rem 1.5rem;
+    border-bottom: 1px solid var(--border);
+}
+
+.card-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.card-content {
+    padding: 1.5rem;
+}
+
+.form-group {
+    margin-bottom: 1rem;
+}
+
+label {
+    display: block;
+    font-size: 0.875rem;
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+}
+
+.code-editor {
+    display: flex;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+    font-family: 'JetBrains Mono', monospace, 'Courier New', Courier;
+    font-size: 0.875rem;
+    background-color: var(--card);
+}
+
+.line-numbers {
+    padding: 0.5rem;
+    padding-right: 0.5rem;
+    text-align: right;
+    background-color: var(--muted);
+    color: var(--muted-foreground);
+    user-select: none;
+    min-width: 40px;
+    border-right: 1px solid var(--border);
+}
+
+.line-numbers div {
+    line-height: 1.5rem;
+}
+
+textarea {
+    flex: 1;
+    padding: 0.5rem 1rem;
+    min-height: 300px;
+    border: none;
+    resize: none;
+    font-family: 'JetBrains Mono', monospace, 'Courier New', Courier;
+    font-size: 0.875rem;
+    line-height: 1.5rem;
+    background-color: transparent;
+    color: inherit;
+    outline: none;
+}
+
+.header-item {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.header-input {
+    flex: 1;
+    padding: 0.5rem;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background-color: transparent;
+    color: inherit;
+    font-size: 0.875rem;
+}
+
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--radius);
+    font-size: 0.875rem;
+    font-weight: 500;
+    height: 2.5rem;
+    padding: 0 1rem;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.btn-icon {
+    height: 2.5rem;
+    width: 2.5rem;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn svg {
+    margin-right: 0.5rem;
+}
+
+.btn-outline {
+    background-color: transparent;
+    border: 1px solid var(--border);
+    color: var(--foreground);
+}
+
+.btn-outline:hover {
+    background-color: var(--muted);
+}
+
+.btn-primary {
+    background-color: var(--primary);
+    color: var(--primary-foreground);
+    border: none;
+}
+
+.btn-primary:hover {
+    opacity: 0.9;
+}
+
+.actions {
+    margin-top: 1.5rem;
+}
+
+.icon {
+    display: inline-block;
+    vertical-align: middle;
+}

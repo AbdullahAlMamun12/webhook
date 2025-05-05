@@ -1,25 +1,16 @@
 from django.http import JsonResponse, HttpResponse, Http404
 from django.views.decorators.csrf import csrf_exempt
-from .models import Session, WebhookRequest
+from .models import Session, WebhookRequest, RequestInfo, RequestData, ResponseData
 from channels.layers import get_channel_layer
 from asgiref.sync import async_to_sync
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse  # Import the reverse function
 from django.utils import timezone
+from .utils import humanize_bytes
+from io import BytesIO
+from urllib.parse import parse_qs
+
 import json
-
-
-
-def humanize_bytes(bytes):
-    """Converts bytes to a human-readable format."""
-    if bytes is None:
-        return "N/A"
-    units = ['B', 'KB', 'MB', 'GB', 'TB', 'PB']
-    i = 0
-    while bytes >= 1024 and i < len(units) - 1:
-        bytes /= 1024
-        i += 1
-    return f"{bytes:.1f} {units[i]}"
 
 def new_session(request):
     """
@@ -48,46 +39,54 @@ def view_session(request, session_id):
     return render(request, "home.html", {"session_id": retrieved_session_id})
 
 
+@csrf_exempt
 def edit_response(request, session_id):
     session = get_object_or_404(Session, id=session_id)
 
     if request.method == "POST":
-        session.response_status = int(request.POST.get("status"))
-        session.response_body = request.POST.get("body")
+        data = json.loads(request.body.decode('utf-8'))
+        session.response_status = int(data.get('status', 200))
+        session.response_body = data.get('body', '')
         try:
-            session.response_headers = json.loads(request.POST.get("headers"))
+            session.response_headers = data.get('headers', {})
         except json.JSONDecodeError:
             session.response_headers = {}
         session.save()
-        return redirect(f"/edit-response/{session_id}/")
 
-    return render(request, "edit_response.html", {"session": session})
+        return redirect(reverse('view_session', kwargs={'session_id': session_id}))
+
+    return render(request, "update-response.html", {"session_id": session_id})
 
 
 @csrf_exempt
-
 def receive_hook(request, session_id):
 
     session = get_object_or_404(Session, id=session_id)
-    headers = {k: v for k, v in request.headers.items()}
-    body = request.body.decode('utf-8', errors='replace')
-    query_params = request.GET.dict()
-    request_size = len(request.body) if hasattr(request, 'body') else 0
 
-    wr = WebhookRequest.objects.create(
-        session=session,
+    if not session.response_headers:
+        session.response_headers = {
+            'Content-Type': 'application/json',
+            'X-Default-Header': 'DefaultValue'
+        }
+        session.save()
+
+
+
+    info = RequestInfo(
         method=request.method,
-        headers=headers,
-        body=body,
-        query_params=query_params,
-        request_size=request_size  # Store the request size here
+        path=request.headers.get('host')+request.path,
+        request_data=RequestData(
+            headers=request.headers,
+            body=request.body,
+            query_params=request.GET,
+            size=len(request.body)
+        ),
+        response_data=ResponseData(
+            headers=session.response_headers,
+            body=session.response_body,
+            size=len(session.response_body)
+        )
     )
-    response_body = session.response_body
-    response_headers = session.response_headers
-    response_status = session.response_status
-    content_type = response_headers.get('Content-Type', 'application/json')
-    response_size_bytes = len(response_body.encode('utf-8')) if response_body else 0
-
 
     # ✅ This is the PRODUCER step!
     channel_layer = get_channel_layer()
@@ -95,23 +94,15 @@ def receive_hook(request, session_id):
         f"logs_{session_id}",
         {
             "type": "new_webhook",
-            "data": {
-                "method": wr.method,
-                "content_type": wr.headers.get('Content-Type', 'application/json'),
-                "body": wr.body[:300],
-                "request_size": humanize_bytes(wr.request_size),  # Use the stored request size
-                "response_size": humanize_bytes(response_size_bytes),  # Approximate response size
-                "timestamp": timezone.now().isoformat(), # Use timezone.now() for consistency
-            }
+            "data": info.to_dict()
         }
     )
 
-    # Return the user's custom response
+
     return HttpResponse(
-        content=response_body,
-        status=response_status,
-        content_type=content_type,
-        headers=response_headers
+        content=session.response_body,
+        status=session.response_status,
+        headers=session.response_headers
     )
 
 

@@ -22,7 +22,7 @@ socket.on('message', (data) => {
             console.log(`⏰ Timestamp: ${parsed.timestamp}`);
             console.log('---');
         } else {
-            console.log('📨 Non-webhook message:', parsed);
+            console.log('📨 New-webhook message:', parsed);
         }
     } catch (err) {
         console.error('❌ Failed to parse WebSocket message:', err.message);

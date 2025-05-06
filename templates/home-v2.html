@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EchoVerse - Webhook Inspector</title>
+  <link rel="stylesheet" href="../static/fonts.css">
+  <link rel="stylesheet" href="../static/home.css">
+</head>
+<body>
+<div class="container">
+  <header>
+    <div class="header-content">
+      <h1>Webhook Inspector</h1>
+      <div class="header-actions">
+        <button id="liveMode" class="btn btn-outline live-active">
+          <span class="badge-ping"></span>
+          Live Mode ON
+        </button>
+        <button id="clearRequests" class="btn btn-outline">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M3 6h18"></path>
+            <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"></path>
+            <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path>
+          </svg>
+          Clear
+        </button>
+      </div>
+    </div>
+
+    <div class="endpoint-display">
+      <div class="endpoint-content">
+        <span class="endpoint-label">Your Webhook URL:</span>
+        <div class="endpoint-url-container">
+          <code id="endpointUrl" class="endpoint-url"></code>
+          <button id="copyEndpoint" class="btn btn-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+              <path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"></path>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="main-content">
+    <div class="request-list-container">
+      <div class="card">
+        <div class="card-header">
+          <div class="flex-between">
+            <h3 class="card-title">Requests</h3>
+            <span id="requestCount" class="request-count">0 Requests</span>
+          </div>
+        </div>
+        <div class="card-content p-0">
+          <div id="requestList" class="request-list">
+            <!-- Requests will be dynamically inserted here -->
+          </div>
+          <div id="emptyRequestMessage" class="empty-state">
+            <p>No requests received yet.<br>Send a request to your endpoint to see it here.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="request-details-container">
+      <div id="detailsCard" class="card">
+        <div id="requestDetailsHeader" class="card-header hidden">
+          <div class="flex-between">
+            <div class="request-method-path">
+              <span id="requestMethod" class="method-badge"></span>
+              <h3 id="requestPath" class="card-title"></h3>
+            </div>
+            <div id="requestTime" class="request-time"></div>
+          </div>
+          <div id="requestMeta" class="request-meta"></div>
+        </div>
+
+        <div id="requestDetailsTabs" class="tabs hidden">
+          <button class="tab-button active" data-tab="headers">Headers</button>
+          <button class="tab-button" data-tab="query">Query</button>
+          <button class="tab-button" data-tab="body">Body</button>
+          <button class="tab-button" data-tab="raw">Raw</button>
+        </div>
+
+        <div id="tabContents" class="tab-contents">
+          <div id="headersTab" class="tab-content active">
+            <div class="tab-header">
+              <span>Headers</span>
+              <button class="btn btn-sm" data-copy="headers">
+                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                  <path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"></path>
+                </svg>
+                Copy
+              </button>
+            </div>
+            <div class="tab-body">
+              <pre id="headersContent" class="code-block"></pre>
+            </div>
+          </div>
+
+          <div id="queryTab" class="tab-content">
+            <div class="tab-header">
+              <span>Query Parameters</span>
+              <button class="btn btn-sm" data-copy="query">
+                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                  <path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"></path>
+                </svg>
+                Copy
+              </button>
+            </div>
+            <div class="tab-body">
+              <pre id="queryContent" class="code-block"></pre>
+            </div>
+          </div>
+
+          <div id="bodyTab" class="tab-content">
+            <div class="tab-header">
+              <span>Body</span>
+              <button class="btn btn-sm" data-copy="body">
+                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                  <path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"></path>
+                </svg>
+                Copy
+              </button>
+            </div>
+            <div class="tab-body">
+              <pre id="bodyContent" class="code-block"></pre>
+            </div>
+          </div>
+
+          <div id="rawTab" class="tab-content">
+            <div class="tab-header">
+              <span>Raw Body</span>
+              <button class="btn btn-sm" data-copy="raw">
+                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                  <path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"></path>
+                </svg>
+                Copy
+              </button>
+            </div>
+            <div class="tab-body">
+              <pre id="rawContent" class="code-block"></pre>
+            </div>
+          </div>
+
+          <div id="emptyDetails" class="empty-state">
+            <p>Select a request from the list to view details</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Toast container -->
+  <div id="toastContainer" class="toast-container"></div>
+</div>
+
+<script src="../static/home.js"></script>
+</body>
+</html>

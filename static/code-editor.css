@@ -48,6 +48,10 @@ h1 {
     .grid {
         grid-template-columns: 1fr 1fr;
     }
+
+    .grid > div:first-child {
+        grid-column: 1 / -1;
+    }
 }
 
 .card {
@@ -193,4 +197,56 @@ textarea {
 .icon {
     display: inline-block;
     vertical-align: middle;
+}
+
+
+
+/* Status code selector styles */
+.select-wrapper {
+    position: relative;
+    margin-bottom: 0.5rem;
+}
+
+.status-select {
+    width: 100%;
+    padding: 0.5rem;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background-color: var(--card);
+    color: var(--foreground);
+    font-size: 0.875rem;
+    appearance: none;
+    cursor: pointer;
+}
+
+.select-wrapper::after {
+    content: '';
+    position: absolute;
+    right: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 0;
+    height: 0;
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-top: 5px solid var(--foreground);
+    pointer-events: none;
+}
+
+.status-description {
+    margin-top: 0.5rem;
+    font-size: 0.875rem;
+    color: var(--muted-foreground);
+    font-style: italic;
+}
+
+optgroup {
+    color: var(--primary);
+    font-weight: 600;
+}
+
+option {
+    color: var(--foreground);
+    background-color: var(--card);
+    padding: 0.5rem;
 }
